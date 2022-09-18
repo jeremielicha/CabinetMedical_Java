@@ -88,6 +88,7 @@ public class FrmPrincipal extends JFrame {
                     System.out.println(keyDate);
                     for (String keyHeure: tmMonPlanning.get(keyDate).keySet()){
                         System.out.println(keyHeure);
+                        System.out.println(tmMonPlanning.get(keyDate).get(keyHeure).getNomPatient());
                     }
                 }
             }
