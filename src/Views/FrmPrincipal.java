@@ -53,13 +53,14 @@ public class FrmPrincipal extends JFrame {
         model = new DefaultTreeModel(root);
         trRdv.setModel(model);
 
+        tmMonPlanning=new TreeMap<>();
+        TreeMap<String, RendezVous> tmHeure= new TreeMap<>();
 
         btnEnvoyer.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                tmMonPlanning=new TreeMap<>();
-                TreeMap<String, RendezVous> tmHeure= new TreeMap<>();
+
 
                 String nomPatient=txtNomPatient.getText();
                 String nomPatologie=cbxPatologie.getSelectedItem().toString();
@@ -68,9 +69,7 @@ public class FrmPrincipal extends JFrame {
 
                 if (txtNomPatient.getText().isEmpty()){
                     JOptionPane.showMessageDialog(null,"Saisir le nom du patient");
-                } else if (cldDate.getDate()==null) {
-                    JOptionPane.showMessageDialog(null,"Saisir une date");
-                }else {
+                } else {
                     if (!tmMonPlanning.containsKey(date)){
                         rendezVous=new RendezVous(heure,nomPatient,nomPatologie);
                         tmHeure.put(heure,rendezVous);
@@ -91,6 +90,7 @@ public class FrmPrincipal extends JFrame {
                         System.out.println(tmMonPlanning.get(keyDate).get(keyHeure).getNomPatient());
                     }
                 }
+                System.out.println("========");
             }
         });
     }
