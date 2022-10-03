@@ -54,43 +54,64 @@ public class FrmPrincipal extends JFrame {
         trRdv.setModel(model);
 
         tmMonPlanning=new TreeMap<>();
-        TreeMap<String, RendezVous> tmHeure= new TreeMap<>();
 
         btnEnvoyer.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
-
+                root.removeAllChildren();
+                DefaultMutableTreeNode dmtnDate;
+                DefaultMutableTreeNode dmtnHeure;
+                DefaultMutableTreeNode dmtnRdv;
                 String nomPatient=txtNomPatient.getText();
                 String nomPatologie=cbxPatologie.getSelectedItem().toString();
                 String date= sdf.format(cldDate.getDate());
                 String heure=spHeures.getValue().toString()+" : "+spMinutes.getValue().toString();
 
-                if (txtNomPatient.getText().isEmpty()){
+                if (txtNomPatient.getText().isEmpty())
+                {
                     JOptionPane.showMessageDialog(null,"Saisir le nom du patient");
-                } else {
-                    if (!tmMonPlanning.containsKey(date)){
-                        rendezVous=new RendezVous(heure,nomPatient,nomPatologie);
+                }
+                else
+                {
+                    if (!tmMonPlanning.containsKey(date))
+                    {
+                        RendezVous rendezVous=new RendezVous(heure,nomPatient,nomPatologie);
+                        TreeMap<String, RendezVous> tmHeure= new TreeMap<>();
                         tmHeure.put(heure,rendezVous);
                         tmMonPlanning.put(date,tmHeure);
-                    }else {
-                        if (!tmMonPlanning.get(date).containsKey(heure)){
+                    }
+                    else
+                    {
+                        if (!tmMonPlanning.get(date).containsKey(heure))
+                        {
                             RendezVous rendezVous=new RendezVous(heure,nomPatient,nomPatologie);
                             tmMonPlanning.get(date).put(heure,rendezVous);
-                        }else {
+                        }
+                        else
+                        {
                             JOptionPane.showMessageDialog(null,"Rdv deja pris");
                         }
                     }
                 }
-                for(String keyDate: tmMonPlanning.keySet()){
-                    System.out.println(keyDate);
-                    for (String keyHeure: tmMonPlanning.get(keyDate).keySet()){
-                        System.out.println(keyHeure);
-                        System.out.println(tmMonPlanning.get(keyDate).get(keyHeure).getNomPatient());
+                for(String keyDate: tmMonPlanning.keySet())
+                {
+                    dmtnDate = new DefaultMutableTreeNode(keyDate);
+
+                    for (String keyHeure: tmMonPlanning.get(keyDate).keySet())
+                    {
+
+                        dmtnHeure=new DefaultMutableTreeNode(keyHeure);
+                        dmtnRdv=new DefaultMutableTreeNode("Nom : "+tmMonPlanning.get(keyDate).get(keyHeure).getNomPatient());
+                        dmtnHeure.add(dmtnRdv);
+                        dmtnDate.add(dmtnHeure);
+                        //root.add(dmtnDate);
                     }
+                    root.add(dmtnDate);
+
                 }
-                System.out.println("========");
+                trRdv.setModel(new DefaultTreeModel(root));
             }
         });
     }
