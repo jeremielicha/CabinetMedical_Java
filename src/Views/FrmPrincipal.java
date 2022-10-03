@@ -66,18 +66,22 @@ public class FrmPrincipal extends JFrame {
                 DefaultMutableTreeNode dmtnRdv;
                 String nomPatient=txtNomPatient.getText();
                 String nomPatologie=cbxPatologie.getSelectedItem().toString();
-                String date= sdf.format(cldDate.getDate());
                 String heure=spHeures.getValue().toString()+" : "+spMinutes.getValue().toString();
 
                 if (txtNomPatient.getText().isEmpty())
                 {
                     JOptionPane.showMessageDialog(null,"Saisir le nom du patient");
                 }
+                else if (cldDate.getDate()==null)
+                {
+                    JOptionPane.showMessageDialog(null,"Saisir une date");
+                }
                 else
                 {
+                    String date= sdf.format(cldDate.getDate());
                     if (!tmMonPlanning.containsKey(date))
                     {
-                        RendezVous rendezVous=new RendezVous(heure,nomPatient,nomPatologie);
+                        rendezVous=new RendezVous(heure,nomPatient,nomPatologie);
                         TreeMap<String, RendezVous> tmHeure= new TreeMap<>();
                         tmHeure.put(heure,rendezVous);
                         tmMonPlanning.put(date,tmHeure);
@@ -101,15 +105,12 @@ public class FrmPrincipal extends JFrame {
 
                     for (String keyHeure: tmMonPlanning.get(keyDate).keySet())
                     {
-
                         dmtnHeure=new DefaultMutableTreeNode(keyHeure);
                         dmtnRdv=new DefaultMutableTreeNode("Nom : "+tmMonPlanning.get(keyDate).get(keyHeure).getNomPatient());
                         dmtnHeure.add(dmtnRdv);
                         dmtnDate.add(dmtnHeure);
-                        //root.add(dmtnDate);
                     }
                     root.add(dmtnDate);
-
                 }
                 trRdv.setModel(new DefaultTreeModel(root));
             }
